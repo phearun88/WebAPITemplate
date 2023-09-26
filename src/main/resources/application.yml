@@ -1,0 +1,30 @@
+server:
+  port: 8888
+
+
+spring:
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/needhelp
+    username: postgres
+    password: admin
+  h2:
+    console:
+      enabled: true
+
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  #disable SerializationFeature
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+application:
+  rest:
+    context-path: /api
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:4200, http://localhost:4201}
