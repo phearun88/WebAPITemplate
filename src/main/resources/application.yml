@@ -24,6 +24,11 @@ spring:
     serialization:
       fail-on-empty-beans: false
 
+  #swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 application:
   rest:
     context-path: /api

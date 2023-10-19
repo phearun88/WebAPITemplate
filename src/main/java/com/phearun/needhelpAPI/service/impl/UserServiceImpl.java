@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,12 @@ public class UserServiceImpl implements UserService {
     public User save(User entity) {
 
         return usersRepository.save(entity);
+    }
+
+
+    @Override
+    public List<User> getUsers() {
+        return usersRepository.findAll();
     }
 }
 

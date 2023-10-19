@@ -6,7 +6,9 @@
 package com.phearun.needhelpAPI.controller;
 
 import com.phearun.needhelpAPI.config.security.RoleEnum;
+import com.phearun.needhelpAPI.dto.CategoryDTO;
 import com.phearun.needhelpAPI.dto.UsersDTO;
+import com.phearun.needhelpAPI.mapper.CategoryMapper;
 import com.phearun.needhelpAPI.mapper.UsersMapper;
 import com.phearun.needhelpAPI.model.User;
 import com.phearun.needhelpAPI.service.UserService;
@@ -14,11 +16,9 @@ import com.phearun.needhelpAPI.service.impl.ApplicationUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -48,5 +48,14 @@ public class UserController {
 
         users = userService.save(users);
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> list(){
+        List<UsersDTO> listUses = userService.getUsers()
+                .stream()
+                .map(u -> UsersMapper.INSTANCE.toDTO(u))
+                .toList();
+        return ResponseEntity.ok(listUses);
     }
 }
