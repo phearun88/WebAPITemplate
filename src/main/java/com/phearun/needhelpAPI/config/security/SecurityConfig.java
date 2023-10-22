@@ -6,6 +6,7 @@
 package com.phearun.needhelpAPI.config.security;
 
 
+import com.phearun.needhelpAPI.config.jwt.JwtLoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,20 +35,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-
+                .addFilter(new JwtLoginFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeHttpRequests()
 //                .antMatchers("/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
-                //.antMatchers("/","/index","/home","css/**","js/**","/api/user").permitAll()
-               // .antMatchers("/api/user").hasRole("ADMIN")
+//                .antMatchers("/","/index","/home","css/**","js/**","/api/user").permitAll()
+//                .antMatchers("/api/user").hasRole("ADMIN")
 
 
                 .antMatchers(HttpMethod.POST, "/api/categories").hasAuthority(PermissionEnum.CATEGORY_WRITE.getDescription())
                 .antMatchers(HttpMethod.GET, "/api/categories").hasAuthority(PermissionEnum.CATEGORY_READ.getDescription())
-//                .anyRequest()
-//                .authenticated()
-                .and()
-                .httpBasic();
+                .anyRequest()
+                .authenticated();
+//                .and()
+//                .httpBasic();
 
 
     }
